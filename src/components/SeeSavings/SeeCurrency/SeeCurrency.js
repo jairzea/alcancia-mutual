@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -46,8 +46,14 @@ export default function SeeCurrency({coins}) {
     const handleChange = (event, newValue) => {
         const coin = event.target.getAttribute('alt')
         setValue(newValue);
-        getShowCoin(coin).then(resp => setselectedCurrency(resp)).catch(error => console.log(error))
+        consult(coin)
     };
+
+    useEffect(() => {
+        value === 0 && consult(50)
+    },[])
+
+    const consult = (coin) => getShowCoin(coin).then(resp => setselectedCurrency(resp)).catch(error => console.log(error))
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -58,7 +64,7 @@ export default function SeeCurrency({coins}) {
                 ))}
             </Tabs>
         </Box>
-        {selectedCurrency && (coins?.map((coin, key) =>(
+        {coins?.map((coin, key) =>(
             <TabPanel value={value} index={key} key={key}>
                 Monedas de {coin?.value}
                 <br/>              
@@ -66,7 +72,7 @@ export default function SeeCurrency({coins}) {
                 <br/>
                 Cantidad de dinero: {selectedCurrency?.currentValue}
             </TabPanel>
-        )))}
+        ))}
        
         </Box>
     );
