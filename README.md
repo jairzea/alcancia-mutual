@@ -4,7 +4,17 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-In the project directory, you can run:
+> > Modify the .env.example file, adding in REACT_APP_BACKEND_DOMAIN the domain or base url of the backend.
+> > then save it as .env, skipping the .example
+> > you can leave the base path set (REACT_APP_PATH_BASE), if you don't change it in the backend
+
+_If you run the backend locally with the mvn spring-boot:run command, it will most likely run on the domain: http://localhost:8080_
+
+> Installation
+
+### `npm install` or `npm i`
+
+> Launch the app
 
 ### `npm start`
 
