@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Modal } from "@mui/material"
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { getCurrentAmount, getCurrentValue } from "../../services/apis/savingsService";
+import { getCurrentStatus } from "../../services/apis/savingsService";
 import SeeCurrency from "./SeeCurrency/SeeCurrency";
 
 const style = {
@@ -20,8 +20,7 @@ const style = {
 const SeeSavings = ({show, updateStatusClose, coins}) => {
 
     const [open, setOpen] = useState(false);
-    const [currentAmount, setCurrentAmount] = useState(0);
-    const [currentValue, setCurrentValue] = useState(0);
+    const [currentStatus, setCurrentStatus] = useState(0);
 
     const handleClose = () => {
         setOpen(false)
@@ -31,8 +30,7 @@ const SeeSavings = ({show, updateStatusClose, coins}) => {
 
     useEffect( () => {
         setOpen(show)
-        getCurrentAmount().then(response => setCurrentAmount(response)).catch(error => console.log(error))
-        getCurrentValue().then(response => setCurrentValue(response)).catch(error => console.log(error))
+        getCurrentStatus().then(response => setCurrentStatus(response)).catch(error => console.log(error))
     }, [show])
 
 
@@ -46,10 +44,10 @@ const SeeSavings = ({show, updateStatusClose, coins}) => {
       >
         <Box sx={style}>
         <Typography id="modal-modal-description" variant="h6" sx={{ mt: 2 }}>
-            <b>Cantidad de dinero</b> dentro de la alcancia: <b>{currentValue}</b>
+            <b>Cantidad de dinero</b> dentro de la alcancia: <b>{currentStatus?.value}</b>
           </Typography>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            <b>Cantidad de monedas</b> dentro de la alcancia: <b>{currentAmount}</b>
+            <b>Cantidad de monedas</b> dentro de la alcancia: <b>{currentStatus?.amount}</b>
           </Typography>
         <SeeCurrency coins={coins}/>
         </Box>

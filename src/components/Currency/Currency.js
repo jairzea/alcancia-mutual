@@ -87,7 +87,7 @@ const Currency = () => {
                 <Button variant='contained' color='success' onClick={ () => setShowSavings(!showSavings) }>Ver mis ahorros</Button>
                 </Grid>
             </Grid>
-            <SeeSavings show={showSavings} updateStatusClose={handleClose} coins={coins}/>
+            {showSavings && <SeeSavings show={showSavings} updateStatusClose={handleClose} coins={coins}/>}
         
         </>
     );

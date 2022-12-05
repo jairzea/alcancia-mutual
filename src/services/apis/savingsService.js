@@ -1,58 +1,36 @@
 import http from "../http";
-import { COIN } from "../../constants/endpoints";
+import { COIN, SHOW_COIN } from "../../constants/endpoints";
+import { denominationMapper } from "./servicesMapper";
 
 export const getShowCoin = async (coin) => {
-    let currentValue = localStorage.getItem(coin)
-    currentValue = currentValue ? JSON.parse(currentValue) : {
-        currentValue : 0,
-        currentAmount : 0
-    }
     
+    const { data = {} } = await http.get(SHOW_COIN(coin));
+    let reduce = data.reduce((sum, coin) => sum + coin.value, 0);
+    const currentValue = {
+        currentValue : reduce,
+        currentAmount : data?.length
+    }
+
     return currentValue
-//   const { data = {} } = await http.get(COIN(coin));
-//   return data;
+
 };
 
-export const getCurrentValue = async () => {
-    let currentValue = localStorage.getItem("currentFullValue")
-    return currentValue ? currentValue : 0
-//   const { data = {} } = await http.get(COIN(coin));
-//   return data;
+export const getCurrentStatus = async () => {
+    const { data = {} } = await http.get(COIN);
+    const currentStatus = {
+        amount : data?.length,
+        value : data.reduce((sum, coin) => sum + coin.value, 0)
+    }
+    return currentStatus;
 };
-
-export const getCurrentAmount = async () => {
-    let currentAmount = localStorage.getItem("currentAmount")
-    return currentAmount ? currentAmount : 0
-}
 
 export const save = async (coin) => {
 
-    let currentFullValue = await getCurrentValue();
-    let currentAmount = await getCurrentAmount();
-
-    const currentCoin = addCurrency(coin)
-
-    currentFullValue = Number(currentFullValue) + Number(coin)
-    localStorage.setItem("currentFullValue", currentFullValue)
-
-    localStorage.setItem("currentAmount", ++currentAmount)
-
-    return currentCoin
-
-}
-
-const addCurrency = async (coin) => {
-
-    let coinStatus = await getShowCoin(coin);
-    let currentAmount = coinStatus?.currentAmount
-    let currentValue = coinStatus?.currentValue
-
-    const amount = {
-        currentValue : Number(currentValue) + Number(coin),
-        currentAmount : ++currentAmount
+    const body = {
+        "denomination" : denominationMapper(coin),
+        "value" : coin
     }
+    const { data = {} } = await http.post(COIN, body);
+    return data
 
-    localStorage.setItem(coin, JSON.stringify(amount))
-
-    return localStorage.getItem(coin);
 }

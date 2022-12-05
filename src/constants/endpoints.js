@@ -1,4 +1,4 @@
-export const LOGIN = "/auth/authentication";
+export const SHOW_COIN = (coin) => `/coins/query?value=${coin}`;
 
-export const COIN = (coin) => `/auth/${coin}`;
+export const COIN = `/coins`;
 
